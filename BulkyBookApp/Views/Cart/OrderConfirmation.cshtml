@@ -1,0 +1,52 @@
+﻿@model BulkyBookApp.Models.Order
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    @using Microsoft.AspNetCore.Mvc.Rendering
+    @using Microsoft.AspNetCore.Http
+@{
+    // Retrieve the user's name from the session or set a default value
+    var userName = HttpContextAccessor.HttpContext.Session.GetString("Username"); // Replace "UserName" with the correct session key if needed
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary">Order Confirmation</h2>
+    <hr />
+
+    <h3>Thank you for your order, @userName!</h3>
+    <p>Your order has been placed successfully. Below are your order details:</p>
+
+    <h4>Order Summary</h4>
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.TotalPrice</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light">
+            <tr>
+                <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                <td>$@Model.TotalAmount</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <a asp-action="ProductIndex" asp-controller="Product" class="btn btn-primary">Continue Shopping</a>
+</div>

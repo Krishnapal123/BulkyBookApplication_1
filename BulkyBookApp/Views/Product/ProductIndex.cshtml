@@ -1,0 +1,84 @@
+﻿@using BulkyBookWeb.Models
+@model IEnumerable<BulkyBookApp.Models.Product>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Product Index";
+
+    // Access HttpContext directly using the Context property available in Razor views
+    var isAdmin = Context.Session.GetString("UserRole")?.Contains("Admin") == true;
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Product List</h2>
+        </div>
+        <div class="col-6 text-end">
+            @if (isAdmin)
+            {
+                <a asp-controller="Product" asp-action="ProductCreate" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> &nbsp; Create New Product
+            </a>
+            }
+        </div>
+    </div>
+    <br /><br />
+
+    <div class="row">
+        @foreach (var obj in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="img-container">
+                        <!-- Flexbox container for centering the image -->
+                        <img src="/products/@obj.Image" class="product-img" alt="@obj.Name" />
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">@obj.Name</h5>
+                        <p class="card-text">Price: $@obj.Price</p>
+                        <p class="card-text">Quantity: @obj.Quantity</p>
+                        <p class="card-text">Category: @obj.Category?.Name</p> <!-- Display category name -->
+                        <div class="btn-group" role="group">
+                            @if (isAdmin)
+                            {
+                                <a asp-controller="Product" asp-action="ProductEdit" asp-route-id="@obj.ProductId" class="btn btn-primary">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-controller="Product" asp-action="ProductDelete" asp-route-id="@obj.ProductId" class="btn btn-danger">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            }
+                            @if (!isAdmin)
+                            {
+                                <!-- Add to Cart Button -->
+                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@obj.ProductId" class="btn btn-success">
+                                    <i class="bi bi-cart-plus-fill"></i> Add to Cart
+                                </a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .img-container {
+        display: flex;
+        justify-content: flex-start; /* Aligns content to the start of the container */
+        align-items: center;
+        height: 200px; /* Set the height to create space for the image */
+        overflow: hidden; /* Hide any overflow from the image */
+    }
+
+    .product-img {
+        width: 80%; /* Ensures the image takes full width */
+        height: 200px; /* Set a fixed height */
+        object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
+    }
+</style>
+

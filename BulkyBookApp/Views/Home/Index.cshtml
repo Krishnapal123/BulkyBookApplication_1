@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .full-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 50vh; /* Occupies the full viewport height */
+        margin: 0;
+        background: linear-gradient(135deg, #4b79a1, #283e51); /* A professional gradient background */
+        color: #fff; /* Sets the text color to white for better contrast */
+    }
+
+    .button-container {
+        margin-top: 20px;
+    }
+
+    .btn-secondary {
+        width: 150px; /* Ensures buttons have consistent width */
+        background-color: #6c757d; /* Button color to match the professional look */
+        color: #fff; /* White text for contrast */
+        border: none; /* Removes button borders */
+        transition: background-color 0.3s ease; /* Adds a smooth transition effect */
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Darker shade on hover for an interactive feel */
+        }
+
+    h1.display-4 {
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Adds a subtle text shadow for depth */
+    }
+</style>
+
+<div class="full-page text-center">
+    <h1 class="display-4">Login Page</h1>
+
+    <div class="button-container">
+        <a asp-controller="Home" asp-action="login" class="btn btn-secondary m-2">Login</a>
+        <a asp-controller="User" asp-action="UserCreate" class="btn btn-secondary m-2">Register</a>
+    </div>
+</div>

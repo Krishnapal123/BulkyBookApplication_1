@@ -1,0 +1,76 @@
+﻿@model BulkyBookApp.Models.Cart
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary">Shopping Cart</h2>
+    <hr />
+
+    @if (!Model.Items.Any())
+    {
+        <p>Your cart is empty.</p>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Price</td>
+                        <td>
+                            <div class="input-group">
+                                <!-- Decrement Button -->
+                                <form asp-controller="Cart" asp-action="DecreaseQuantity" method="post">
+                                    <input type="hidden" name="id" value="@item.ProductId" />
+                                    <button class="btn btn-secondary btn-sm" type="submit">-</button>
+                                </form>
+                                <span class="px-3">@item.Quantity</span>
+                                <!-- Increment Button -->
+                                <form asp-controller="Cart" asp-action="IncreaseQuantity" method="post">
+                                    <input type="hidden" name="id" value="@item.ProductId" />
+                                    <button class="btn btn-secondary btn-sm" type="submit">+</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>@item.TotalPrice</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <form asp-action="RemoveFromCart" asp-controller="Cart" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.ProductId" />
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                    <td colspan="2">$@Model.TotalAmount</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="mt-3">
+            <a asp-action="ProductIndex" asp-controller="Product" class="btn btn-secondary">Continue Shopping</a>
+            <form asp-action="Checkout" asp-controller="Cart" method="post" class="d-inline">
+                <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+            </form>
+        </div>
+    }
+    
+</div>

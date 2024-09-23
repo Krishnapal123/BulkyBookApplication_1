@@ -1,0 +1,14 @@
+﻿/* wwwroot/css/site.css or wwwroot/css/custom.css */
+.table img {
+    max-width: 100px; /* Adjust width as needed */
+    height: auto;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn {
+    margin: 0 5px;
+}

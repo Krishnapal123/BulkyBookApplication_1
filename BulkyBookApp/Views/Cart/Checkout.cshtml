@@ -1,0 +1,87 @@
+﻿@model BulkyBookApp.ViewModels.CheckoutViewModel
+
+<h2>Checkout</h2>
+<hr />
+
+@if (!Model.Cart.Items.Any())
+{
+    <p>Your cart is empty. Please add items to your cart before checking out.</p>
+    <a asp-controller="Product" asp-action="ProductIndex" class="btn btn-secondary">Continue Shopping</a>
+}
+else
+{
+    <form asp-action="PlaceOrder" method="post">
+        <div class="row">
+            <!-- Product Table -->
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Cart.Items)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>@item.Price</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.TotalPrice</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                            <td>@Model.Cart.TotalAmount</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Price Summary Section -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Price Summary</h5>
+                        <hr />
+
+                        <!-- Cart Total -->
+                        <p class="mb-2">
+                            <strong>Cart Total:</strong>
+                            <span class="float-end">@Model.Cart.TotalAmount</span>
+                        </p>
+
+                        @* <!-- Delivery Charge -->
+                        <p class="mb-2">
+                            <strong>Delivery Charge:</strong>
+                            <span class="float-end">@Model.Cart.DeliveryCharge</span> <!-- Assuming DeliveryCharge is a property of the Cart object -->
+                        </p> *@
+
+                        <!-- Total Amount with Delivery -->
+                       @*  <p class="mb-2">
+                            <strong>Total with Delivery:</strong>
+                            <span class="float-end">@Model.Cart.TotalAmount + Model.Cart.DeliveryCharge</span> <!-- You may need to calculate this on the backend and pass it in the model -->
+                        </p>
+ *@
+                        <hr />
+
+                        <!-- Shipping Address Input -->
+                        <div class="form-group mt-3">
+                            <label asp-for="ShippingAddress"></label>
+                            <input asp-for="ShippingAddress" class="form-control" required />
+                            <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                        </div>
+
+                        <!-- Proceed to Checkout Button -->
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Proceed to checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
